@@ -1,1 +1,1 @@
-
+#include "StrumokTestFixtures.h"

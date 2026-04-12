@@ -4,10 +4,10 @@
 
 inline uint64_t strumok_T(uint64_t w)
 {
-    return strumok_T0[(w >> 56) & 0xFF] ^ strumok_T1[(w >> 48) & 0xFF] ^
-           strumok_T2[(w >> 40) & 0xFF] ^ strumok_T3[(w >> 32) & 0xFF] ^
-           strumok_T4[(w >> 24) & 0xFF] ^ strumok_T5[(w >> 16) & 0xFF] ^
-           strumok_T6[(w >> 8)  & 0xFF] ^ strumok_T7[w & 0xFF];
+    return strumok_T0[w & 0xFF] ^ strumok_T1[(w >> 8) & 0xFF] ^
+           strumok_T2[(w >> 16) & 0xFF] ^ strumok_T3[(w >> 24) & 0xFF] ^
+           strumok_T4[(w >> 32) & 0xFF] ^ strumok_T5[(w >> 40) & 0xFF] ^
+           strumok_T6[(w >> 48)  & 0xFF] ^ strumok_T7[(w >> 56) & 0xFF];
 }
 
 inline uint64_t strumok_AlphaMul(uint64_t w)
