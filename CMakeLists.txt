@@ -3,4 +3,7 @@ project(Assignment02_Cryptography)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Assignment02_Cryptography src/main.cpp)
+enable_testing()
+
+add_subdirectory(src)
+add_subdirectory(tests)
