@@ -2,6 +2,8 @@
 
 void Strumok256::init(const uint64_t K[4], const uint64_t IV[4])
 {
+    keystreamIndex = 8;
+
     register1 = 0;
     register2 = 0;
 

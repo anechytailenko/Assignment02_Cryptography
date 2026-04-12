@@ -2,6 +2,8 @@
 
 void Strumok512::init(const uint64_t K[8], const uint64_t IV[4])
 {
+    keystreamIndex = 8;
+
     register1 = 0;
     register2 = 0;
 
