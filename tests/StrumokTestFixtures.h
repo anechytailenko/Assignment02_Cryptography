@@ -33,8 +33,8 @@ protected:
     void initCipher() {
         uint64_t K64[4], IV64[4];
         for (int i = 0; i < 4; ++i) {
-            K64[i] = load64LittleEndian(key + i * 8);
-            IV64[i] = load64LittleEndian(iv + i * 8);
+            K64[3 - i] = load64LittleEndian(key + i * 8);
+            IV64[3 - i] = load64LittleEndian(iv + i * 8);
         }
         cipher.init(K64, IV64);
     }
@@ -63,10 +63,10 @@ protected:
     void initCipher() {
         uint64_t K64[8], IV64[4];
         for (int i = 0; i < 8; ++i) {
-            K64[i] = load64LittleEndian(key + i * 8);
+            K64[7 - i] = load64LittleEndian(key + i * 8);
         }
         for (int i = 0; i < 4; ++i) {
-            IV64[i] = load64LittleEndian(iv + i * 8);
+            IV64[3 - i] = load64LittleEndian(iv + i * 8);
         }
         cipher.init(K64, IV64);
     }
