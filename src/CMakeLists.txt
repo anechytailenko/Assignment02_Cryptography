@@ -21,3 +21,15 @@ add_custom_target(run_benchmark
         COMMENT "Running Strumok Benchmark..."
         USES_TERMINAL 
 )
+
+add_executable(strumok_usage
+        usage/main.cpp
+)
+target_link_libraries(strumok_usage PRIVATE strumok_lib)
+
+add_custom_target(run_usage
+        COMMAND strumok_usage
+        DEPENDS strumok_usage
+        COMMENT "Running Strumok Usage..."
+        USES_TERMINAL
+)
