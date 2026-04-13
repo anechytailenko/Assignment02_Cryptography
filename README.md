@@ -4,7 +4,7 @@
 
 **Nechytailenko Anna**: found an attack basis using the Autoguess tool, developed a custom C++ simulation to practically demonstrate a Guess-and-Determine attack, along with finding the full internal state and write corresponding report parts.
 
-**Illia Prykhodko**: WRITE HERE
+**Illia Prykhodko**: Wrote Strumok256 and Strumok512 impementations on C++. Used official testing vectors to verify correctness of the execution. Coded benchamrk to measure time of encryption and showed usage of the cipher on some text. Finally, wrote report to corresponding parts of my work and comparison of different streamciphers.
 
 ## 1.  Theoretical background of the partial guessing attack and example of its application
 
@@ -50,7 +50,137 @@ Paritial guessing attacks are a focal point of actice research in modern cryptog
 4) ChaCha20: even not using shift registers, the cypher is vulnerable to "Key Bridges" - logial links between intermediate states in the ARX architecture. Because ARX operations are totally inverible, a successful bridge allows calculate both the secret key and the future keystream. By appling Grover's algorithm to these bridges 256-bit security is reduced to 2^251, falling below the theoretical 2^256 limit
 
 
-## 2. Implementation of Strumok-256 and -512 + benchmark - WRITE HERE
+## 2. Implementation of Strumok-256 and -512 + benchmark 
+
+The objective of this block to show usage of the implemented cipher along with the testing according to DSTU 8845:2019 testing vectors. Also, guide how to build and run proper parts of the project can be found in this block.
+
+
+### 2.1 Example Usage Of The Own Realisation
+
+Below is shown plaintext (in ASCII), ciphertext (in HEX) and decrypted text (in ASCII).
+
+#### For the Strumok-256 such properties were used:
+
+INIT_VECTOR = { [0]: 0x0000000000000000, [1]: 0x0000000000000000, [2]: 0x0000000000000000, [3]: 0x0000000007080401 }
+
+KEY = { [0]: 0x0000000000000000, [1]: 0x0000000000000000, [2]: 0x0000000000000000, [3]: 0x0000000001200911 }
+
+PLAINTEXT = "Hi, you asked about cryptocurrency to buy: here is my advice according to..."
+
+#### For the Strumok-512 such properties were used:
+
+INIT_VECTOR = { [0]: 0x0000000000000000, [1]: 0x0000000000000000, [2]: 0x0000000000000000, [3]: 0x0000000032124511 }
+
+KEY = { [0]: UNINITIALIZED, [1]: 0x0000000000000000, [2]: 0x0000000000000000, [3]: 0x0000000000000000, [4]: 0x0000000000000000, [5]: 0x0000000000000000, [6]: 0x0000000000000000, [7]: 0x0ABB8814CDABFF67 }
+
+PLAINTEXT = "I invite you to my party at Little Saint James"
+
+```
+[100%] Running Strumok Usage...
+=======================================================
+================   Strumok 256 Usage   ================
+
+Plaintext:  Hi, you asked about cryptocurrency to buy: here is my advice according to...
+Ciphertext: 842151695118322421370134244242172229192411415716443125832212871122701791092551361242021442400422623216675172240661282237014732151252113174204175155107187632511095542691571481411461051228313712114618109165116
+Decrypted:  Hi, you asked about cryptocurrency to buy: here is my advice according to...
+
+=======================================================
+
+
+=======================================================
+================   Strumok 512 Usage   ================
+
+Plaintext:  I invite you to my party at Little Saint James
+Ciphertext: 56218181494610250193235197642431835522613525102156159104242215224163901535021051102169207114253184721916443115219114667563
+Decrypted:  I invite you to my party at Little Saint James
+
+=======================================================
+```
+
+### 2.2 Testing according to provided DSTU 8845:2019 vectors
+
+#### Strumok-256 version testing
+
+All testing vectors for Strumok-256 were taken from DSTU 8845:2019 document, appendix "Д", exactly "Д.1.1".
+
+Positive results of the tests:
+
+```
+[----------] Global test environment set-up.
+[----------] 4 tests from Strumok256Test
+[ RUN      ] Strumok256Test.StrumokDstuStandard1
+[       OK ] Strumok256Test.StrumokDstuStandard1 (0 ms)
+[ RUN      ] Strumok256Test.StrumokDstuStandard2
+[       OK ] Strumok256Test.StrumokDstuStandard2 (0 ms)
+[ RUN      ] Strumok256Test.StrumokDstuStandard3
+[       OK ] Strumok256Test.StrumokDstuStandard3 (0 ms)
+[ RUN      ] Strumok256Test.StrumokDstuStandard4
+[       OK ] Strumok256Test.StrumokDstuStandard4 (0 ms)
+[----------] 4 tests from Strumok256Test (0 ms total)
+```
+
+#### Strumok-512 version testing
+
+All testing vectors for Strumok-512 were taken from DSTU 8845:2019 document, appendix "Д", exactly "Д.2.1".
+
+Positive results of the tests:
+
+```
+[----------] 4 tests from Strumok512Test
+[ RUN      ] Strumok512Test.StrumokDstuStandard1
+[       OK ] Strumok512Test.StrumokDstuStandard1 (0 ms)
+[ RUN      ] Strumok512Test.StrumokDstuStandard2
+[       OK ] Strumok512Test.StrumokDstuStandard2 (0 ms)
+[ RUN      ] Strumok512Test.StrumokDstuStandard3
+[       OK ] Strumok512Test.StrumokDstuStandard3 (0 ms)
+[ RUN      ] Strumok512Test.StrumokDstuStandard4
+[       OK ] Strumok512Test.StrumokDstuStandard4 (0 ms)
+[----------] 4 tests from Strumok512Test (0 ms total)
+```
+
+### 2.3 Benchmark results for the Strumok-256 and Strumok-512 realisations
+
+#### Properties of the testing for both Strunok-256 and Strumok-512 versions
+> Note: All the testing was conducted without parallelisation
+
+NUMBER OF TESTS = 10
+
+SIZE OF BYTES TESTED = 512 MB
+
+RESULTING VALUE MEASUREMENT SYSTEM = MB/s
+
+**Strumok-256**
+```
+Strumok-256 Speed: 570.886 MB/s
+Strumok-256 Speed: 591.82 MB/s
+Strumok-256 Speed: 588.941 MB/s
+Strumok-256 Speed: 586.594 MB/s
+Strumok-256 Speed: 585.051 MB/s
+Strumok-256 Speed: 584.918 MB/s
+Strumok-256 Speed: 583.676 MB/s
+Strumok-256 Speed: 583.854 MB/s
+Strumok-256 Speed: 583.99 MB/s
+Strumok-256 Speed: 583.72 MB/s
+
+Average: 584.345 MB/s
+```
+
+**Strumok-512**
+```
+Strumok-512 Speed: 584.375 MB/s
+Strumok-512 Speed: 584.186 MB/s
+Strumok-512 Speed: 584.17 MB/s
+Strumok-512 Speed: 583.045 MB/s
+Strumok-512 Speed: 582.756 MB/s
+Strumok-512 Speed: 583.115 MB/s
+Strumok-512 Speed: 582.488 MB/s
+Strumok-512 Speed: 582.15 MB/s
+Strumok-512 Speed: 581.893 MB/s
+Strumok-512 Speed: 582.269 MB/s
+
+Average: 583.045 MB/s
+```
+
 
 ### How to build:
 
@@ -64,6 +194,9 @@ Paritial guessing attacks are a focal point of actice research in modern cryptog
 
 ### Run tests:
 ``bash cmake --build . --target run_tests``
+
+### Run usage on the real text:
+``bash cmake --build . --target run_usage``
 
 ## 3. Identified Bases for the Guess-and-Determine Attack
 
