@@ -3,6 +3,8 @@
 #include <chrono>
 #include <iostream>
 
+constexpr size_t NUMBER_OF_TESTS = 10;
+
 double benchmark256()
 {
     const size_t size_bytes = 1024 * 1024 * 512;
@@ -45,9 +47,38 @@ double benchmark512()
     return speed_mb_s;
 }
 
+void runBenchmark(double (*func)(), const size_t numberOfTests, double *outVector, const std::string &outputMsg)
+{
+    for (int i = 0; i < numberOfTests; ++i)
+    {
+        outVector[i] = func();
+        std::cout << outputMsg << " Speed: " << outVector[i]<< " MB/s\n";
+    }
+}
+
+void printAverage(const double *resultsVector, const size_t numberOfTests)
+{
+    std::cout << std::endl;
+    double sum = 0;
+    for (int i = 0; i < numberOfTests; ++i)
+    {
+        sum += resultsVector[i];
+    }
+
+    std::cout << "Average: " << (sum / static_cast<double>(numberOfTests)) << " MB/s";
+    std::cout << std::endl;
+}
+
 int main()
 {
-    std::cout << "Strumok-256 Speed: " << benchmark256() << " MB/s\n";
-    std::cout << "Strumok-512 Speed: " << benchmark512() << " MB/s\n";
+    double benchmark256Results[NUMBER_OF_TESTS];
+    runBenchmark(benchmark256, NUMBER_OF_TESTS, benchmark256Results, "Strumok-256");
+    printAverage(benchmark256Results, NUMBER_OF_TESTS);
+
+    std::cout << std::endl;
+
+    double benchmark512Results[NUMBER_OF_TESTS];
+    runBenchmark(benchmark512, NUMBER_OF_TESTS, benchmark512Results, "Strumok-512");
+    printAverage(benchmark512Results, NUMBER_OF_TESTS);
     return 0;
 }
