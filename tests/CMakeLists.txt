@@ -11,6 +11,7 @@ include(GoogleTest)
 add_executable(strumok_tests 
         test-strumok256.cpp 
         test-strumok512.cpp
+        test-attack.cpp
 )
 
 target_include_directories(strumok_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
