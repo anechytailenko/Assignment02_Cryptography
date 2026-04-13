@@ -318,4 +318,24 @@ By sequentially traversing the dependency graph and applying these derived inver
 
 
 
-## 5.  короткий порiвняльний аналiз характеристик шифрiв Струмок iз iншими шифрами,наприклад, шифрами ZUC, ChaCha20 тощо. - WRITE HERE
+## 5. Comparative analysis of the characteristics of Strumok, ZUC and ChaCha20 ciphers
+
+### 5.1 Comparison table including different features
+
+| Feature | Strumok | ZUC | ChaCha20 |
+| :--- | :--- | :--- | :--- |
+| **Design Type** | LFSR + FSM | LFSR + FSM | ARX-based |
+| **Key Size** | 256 / 512 bits | 128 / 256 bits | 256 bits |
+| **State Size** | 512 bits (LFSR) + 64 bits (FSM) | 512 bits (LFSR) + 64 bits (FSM) | 512 bits (Matrix) |
+| **Word Size** | 64-bit | 32-bit | 32-bit |
+| **Core Operations** | LFSR shifts, XOR, Addition mod 2^64 | LFSR shifts, Linear transformation, Bit reorganization | Addition, Rotation, XOR |
+| **Speed** | Very High (optimized for 64-bit SIMD) | High (optimized for hardware/mobile) | Very High (software-optimized ARX) |
+| **Country of Origin** | Ukraine | China | USA |
+
+### 5.2 Small individual characteristic for each cipher
+
+**Strumok:** Standardized as DSTU 8845:2019. This cipher achieves high throughput on 64-bit processors by processing 64-bit words in the LFSR feedback loop.
+
+**ZUC:** Developed by the Data Assurance and Communication Security Research Center (DACAS). This is the basis of 3GPP mobile security, specifically designed for efficient hardware execution in LTE and 5G networks.
+
+**ChaCha20:** Designed by Daniel J. Bernstein. It does not have LFSRs entirely to provide high-speed performance for all CPU architectures. Also  it is immune to timing-based cache attacks.
