@@ -1,7 +1,12 @@
 # Assignment02_Cryptography
 
+## Authorship and contribution of each of the group members
 
-## 1. Theoretical background of the partial guessing attack and example of its application
+**Nechytailenko Anna**: found an attack basis using the Autoguess tool, developed a custom C++ simulation to practically demonstrate a Guess-and-Determine attack, along with finding the full internal state and write corresponding report parts.
+
+**Illia Prykhodko**: WRITE HERE
+
+## 1.  Theoretical background of the partial guessing attack and example of its application
 
 **1.1 The essence of the Guess-and-Determine(GD) Attack**
 
@@ -45,7 +50,7 @@ Paritial guessing attacks are a focal point of actice research in modern cryptog
 4) ChaCha20: even not using shift registers, the cypher is vulnerable to "Key Bridges" - logial links between intermediate states in the ARX architecture. Because ARX operations are totally inverible, a successful bridge allows calculate both the secret key and the future keystream. By appling Grover's algorithm to these bridges 256-bit security is reduced to 2^251, falling below the theoretical 2^256 limit
 
 
-## Implementation of Strumok-256 and -512 + benchmark
+## 2. Implementation of Strumok-256 and -512 + benchmark - WRITE HERE
 
 ### How to build:
 
@@ -144,3 +149,40 @@ The success of the attack relies on the strategic selection of these 7 nodes, wh
 Within 12 casxading steps. the attacker deterministically recovers the entire internal state (``40 out of 40 state variables are known without``) without any further brute-force requirements. The visual propagation path of this detemiantion wave is illustrated in the [dependecy graph](task03/results/output_graph.pdf).
 
 
+
+## 4. Practical simulation of the Determination Phase
+
+The objective of this stage is to programmatically validate the feasibility of the theoretical attack on the **Strumok-512** cipher using a custom C++ simulation: ``bash cmake --build . --target run_attack`` - passed test serve as the funcitonal proof of the cryptoanlytic vulnerabilities.
+
+### 4.1 Adversial model and initial data
+
+The simulation is predicted on an adversarial model where the attacker has already obtained the following parameters:
+* **Gamma:** 11 intercepted 64-bit words ($Z_0, \dots, Z_{10}$) generated during the cipher's normal operational mode.
+
+* **The attack basis**: a set of 7 correcyly guessed internal variables:  $\{S_{16}, R_1, S_3, R_5, S_{20}, S_{21}, S_5\}$.
+
+### 4.2 Computational logic:
+
+The deterministic recovery of the remaining 33 internal state variable is achieved through a combination of the **Autoguess** determinaion logs and rigorous algebraic reversal of the DSTU 8845:2019 standard specifications.
+
+**1. Operational sequence**
+The implementation strictly adheres to the determination cascase identifies in the graph topology spanning from **State 0** to **State 11**. The sequence is optimized such that each line of code calculated a specific variable only after all its functional arguments have been resolved in preceding steps.
+
+**2. Derivation of inverse equation**
+While the dependency graph identifies the links between nodes. the simulation requires the derivation of inverse equation to isolate the unkown variable from the standard's forward functions:
+
+* **Register update** The forward state transition $R_{new} = (R_{old} + S) \pmod{2^{64}}$ is inverted using modular substraction to recover previous states.
+    * *Implementation:* `R[3] = R[5] - S[16];`
+* **State transition** These operations involve matrix $\alpha$-multiplication and XORs. Since XOR is an **involution**, the targer unknown and the known observable are swapped to solve the equation.
+    * *Implementation:* `S[18] = S[21] ^ strumok_AlphaMul(S[5]) ^ ...`
+* **Gamma output**  The output function  $Z = ((S_{20} + R_6) \oplus R_5) \oplus S_5$ is solved from the **"outside-in."**. By applying inverse XORs followed by modular substraction, the hidden register values are isolated and recovered.
+    * *Implementation:* `R[6] = ((Z[5] ^ S[5]) ^ R[5]) - S[20];`
+
+
+### 4.3 Conclusion
+
+By sequentially traversing the dependency graph and applying these derived inverse equations, the script deterministically recovers 100% of the internal state without the need for additional exhaustive search - thereby confirming the mathematical vulnerability of the cipher.
+
+
+
+## 5.  короткий порiвняльний аналiз характеристик шифрiв Струмок iз iншими шифрами,наприклад, шифрами ZUC, ChaCha20 тощо. - WRITE HERE
