@@ -50,8 +50,12 @@ void strumok512Usage(const std::string &plaintext)
     uint8_t iv[32]  = {0x11, 0x45, 0x12, 0x32};
 
     uint64_t K64[8], IV64[4];
-    for (int i = 0; i < 7; ++i) {
+
+    for (int i = 0; i < 8; ++i) {
         K64[7 - i] = load64LittleEndian(key + i * 8);
+    }
+
+    for (int i = 0; i < 4; ++i) {
         IV64[3 - i] = load64LittleEndian(iv + i * 8);
     }
 
@@ -126,7 +130,8 @@ void displayAll(Version version, const std::string &title, const std::string &pl
 
 int main()
 {
-    displayAll(Version::Strumok256, "Strumok 256 Usage", "Those who want to live, let them fight, and those who do not want to fight in this world of eternal struggle do not deserve...");
+    // displayAll(Version::Strumok256, "Strumok 256 Usage", "Those who want to live, let them fight, and those who do not want to fight in this world of eternal struggle do not deserve...");
+    displayAll(Version::Strumok256, "Strumok 256 Usage", "Hi, you asked about cryptocurrency to buy: here is my advice according to...");
     displayAll(Version::Strumok512, "Strumok 512 Usage", "I invite you to my party at Little Saint James");
 
     return 0;
