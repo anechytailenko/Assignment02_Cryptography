@@ -45,10 +45,9 @@ double benchmark512()
     return speed_mb_s;
 }
 
-
 int main()
 {
-    std::cout << "Strumok-256 Spped: " << benchmark256() << " MB/s\n";
+    std::cout << "Strumok-256 Speed: " << benchmark256() << " MB/s\n";
     std::cout << "Strumok-512 Speed: " << benchmark512() << " MB/s\n";
     return 0;
 }

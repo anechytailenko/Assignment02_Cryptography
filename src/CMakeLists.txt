@@ -12,6 +12,12 @@ target_include_directories(strumok_lib PUBLIC
 
 add_executable(strumok_benchmark
         benchmark/main.cpp
-        ${STRUMOK}
 )
 target_link_libraries(strumok_benchmark PRIVATE strumok_lib)
+
+add_custom_target(run_benchmark
+        COMMAND strumok_benchmark
+        DEPENDS strumok_benchmark
+        COMMENT "Running Strumok Benchmark..."
+        USES_TERMINAL 
+)

@@ -45,7 +45,20 @@ Paritial guessing attacks are a focal point of actice research in modern cryptog
 4) ChaCha20: even not using shift registers, the cypher is vulnerable to "Key Bridges" - logial links between intermediate states in the ARX architecture. Because ARX operations are totally inverible, a successful bridge allows calculate both the secret key and the future keystream. By appling Grover's algorithm to these bridges 256-bit security is reduced to 2^251, falling below the theoretical 2^256 limit
 
 
+## Implementation of Strumok-256 and -512 + benchmark
 
+### How to build:
+
+1) ``bash mkdir build``
+2) ``bash cd build``
+3) ``bash cmake ..``
+4) ``bash cmake --build .``
+
+### Run benchmark:
+``bash cmake --build . --target run_benchmark``
+
+### Run tests:
+``bash cmake --build . --target run_tests``
 
 ## 3. Identified Bases for the Guess-and-Determine Attack
 
