@@ -4,17 +4,6 @@
 #include "Strumok256.h"
 #include "Strumok512.h"
 
-inline uint64_t load64LittleEndian(const uint8_t* p) {
-    return static_cast<uint64_t>(p[0]) |
-          (static_cast<uint64_t>(p[1]) << 8) |
-          (static_cast<uint64_t>(p[2]) << 16) |
-          (static_cast<uint64_t>(p[3]) << 24) |
-          (static_cast<uint64_t>(p[4]) << 32) |
-          (static_cast<uint64_t>(p[5]) << 40) |
-          (static_cast<uint64_t>(p[6]) << 48) |
-          (static_cast<uint64_t>(p[7]) << 56);
-}
-
 class Strumok256Test : public ::testing::Test {
 protected:
     Strumok256 cipher;
